@@ -27,7 +27,25 @@
     "commitizen": "^4.3.0",
     "eslint": "^8.42.0",
     "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
     "prettier": "^2.8.8"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ],
+    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+      "prettier --write--parser json"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.{scss,less,styl,html}": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   },
   "config": {
     "commitizen": {
