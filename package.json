@@ -1,0 +1,27 @@
+{
+  "name": "aurora",
+  "version": "0.0.1",
+  "description": "An artificial intelligence assistant, powered by ChatGPT.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leecervan904/aurora.git"
+  },
+  "keywords": [
+    "ai",
+    "ChatGPT"
+  ],
+  "author": "leecervan904",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leecervan904/aurora/issues"
+  },
+  "homepage": "https://github.com/leecervan904/aurora#readme",
+  "devDependencies": {
+    "eslint": "^8.42.0",
+    "prettier": "^2.8.8"
+  }
+}
