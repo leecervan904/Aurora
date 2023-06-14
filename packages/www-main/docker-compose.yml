@@ -1,0 +1,24 @@
+version: '3'
+services:
+  nest:
+    image: leecervan/chatgpt-doc-nest
+    platform: linux/arm64
+    restart: always
+    ports:
+      - '3030:3000'
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongo:27017/BetterGPT
+    depends_on:
+      - mongo
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - '9900:27017'
+volumes:
+  mongo_data:
