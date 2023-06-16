@@ -17,6 +17,9 @@
     "ChatGPT"
   ],
   "scripts": {
+    "dev:web": "pnpm --filter @aurora/client-web dev",
+    "dev:extension": "pnpm --filter @aurora/client-extension def",
+    "dev:main": "pnpm --filter @aurora/www-main start:dev",
     "commit": "cz",
     "prepare": "husky install",
     "lint": "eslint .",
@@ -27,6 +30,7 @@
     "@antfu/eslint-config-react": "^0.39.5",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
+    "@types/estree": "^1.0.1",
     "commitizen": "^4.3.0",
     "eslint": "^8.42.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -34,6 +38,10 @@
     "lint-staged": "^13.2.1",
     "prettier": "^2.8.8",
     "typescript": "~5.0.4"
+  },
+  "resolutions": {
+    "@types/react": "^18.2.7",
+    "@types/estree": "^1.0.1"
   },
   "lint-staged": {
     "*": "eslint --fix"

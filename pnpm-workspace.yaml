@@ -2,4 +2,4 @@ packages:
   - 'packages/*'
   # - 'packages/client-extension'
   # - 'packages/client-web'
-  # - 'packages/client-main'
+  # - 'packages/www-main'
