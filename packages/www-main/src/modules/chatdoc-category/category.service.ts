@@ -1,33 +1,32 @@
-import { Injectable } from "@nestjs/common"
-import { CreateCategoryDto, UpdateCategoryDto } from "./category.dto"
-import { InjectModel } from "@app/transformers/model.transformer"
-import { ChatdocCategory } from "./category.model"
-import { MongooseModel } from "@app/interfaces/mongoose.interface"
-import { PaginateOptions, PaginateQuery } from "@app/utils/paginate"
+import { Injectable } from '@nestjs/common'
+import { InjectModel } from '@app/transformers/model.transformer'
+import type { MongooseModel } from '@app/interfaces/mongoose.interface'
+import type { PaginateOptions, PaginateQuery } from '@app/utils/paginate'
+import { ChatdocCategory } from './category.model'
+import type { CreateCategoryDto, UpdateCategoryDto } from './category.dto'
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(ChatdocCategory)
-    private readonly categoryModel: MongooseModel<ChatdocCategory>
+    private readonly categoryModel: MongooseModel<ChatdocCategory>,
   ) {}
 
   async create(userId: number, createCategoryDto: CreateCategoryDto) {
     const existCategory = await this.categoryModel.findOne({
       userId,
-      slug: createCategoryDto.slug
+      slug: createCategoryDto.slug,
     })
-    if (existCategory) {
-      throw "This category already exists"
-    }
+    if (existCategory)
+      throw 'This category already exists'
 
     const newCategory = await this.categoryModel.create({
       userId,
-      ...createCategoryDto
+      ...createCategoryDto,
     })
 
     return {
-      data: newCategory
+      data: newCategory,
     }
   }
 
@@ -35,7 +34,7 @@ export class CategoryService {
     const categories = await this.categoryModel.find({ userId })
 
     return {
-      data: categories
+      data: categories,
     }
   }
 
@@ -43,65 +42,62 @@ export class CategoryService {
     const category = await this.categoryModel.findOne({ userId, id })
 
     return {
-      data: category
+      data: category,
     }
   }
 
   async update(
     userId: number,
     id: number,
-    updateCategoryDto: UpdateCategoryDto
+    updateCategoryDto: UpdateCategoryDto,
   ) {
     const existCategory = await this.categoryModel.findOne({
       userId,
-      slug: updateCategoryDto.slug
+      slug: updateCategoryDto.slug,
     })
-    if (existCategory) {
-      throw "This category already exists"
-    }
+    if (existCategory)
+      throw 'This category already exists'
 
     const updatedCategory = await this.categoryModel.findOneAndUpdate(
       {
         userId,
-        id
+        id,
       },
-      updateCategoryDto
+      updateCategoryDto,
     )
-    if (!updatedCategory) {
-      throw "This category does not exist"
-    }
+    if (!updatedCategory)
+      throw 'This category does not exist'
 
     return {
-      data: updatedCategory
+      data: updatedCategory,
     }
   }
 
   async remove(userId: number, id: number) {
     const removedCategory = await this.categoryModel.findOneAndRemove({
       userId,
-      id
+      id,
     })
-    if (!removedCategory) {
-      throw "This category does not exist"
-    }
+    if (!removedCategory)
+      throw 'This category does not exist'
 
     return {
-      data: removedCategory
+      data: removedCategory,
     }
   }
 
   async paginator(
     userId: number,
     query: PaginateQuery<ChatdocCategory>,
-    options: PaginateOptions
+    options: PaginateOptions,
   ) {
     const categories = await this.categoryModel.paginate(
       { userId, ...query },
-      { ...options, lean: true }
+      { ...options, lean: true },
     )
 
     return {
-      data: categories
+      data: categories,
     }
   }
 }

@@ -1,11 +1,11 @@
-import { prop, modelOptions } from "@typegoose/typegoose"
-import { IsString, IsNotEmpty } from "class-validator"
-import { getProviderByTypegooseClass } from "@app/transformers/model.transformer"
+import { modelOptions, prop } from '@typegoose/typegoose'
+import { IsNotEmpty, IsString } from 'class-validator'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
 @modelOptions({
   schemaOptions: {
-    versionKey: false
-  }
+    versionKey: false,
+  },
 })
 export class BannedToken {
   @IsString()
@@ -13,7 +13,7 @@ export class BannedToken {
   @prop({ required: true })
   token: string
 
-  @prop({ type: Date, expires: "1d", default: Date.now })
+  @prop({ type: Date, expires: '1d', default: Date.now })
   createdAt: Date
 }
 

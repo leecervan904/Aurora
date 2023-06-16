@@ -1,11 +1,11 @@
-import { AutoIncrementIDOptions } from "@typegoose/auto-increment"
+import type { AutoIncrementIDOptions } from '@typegoose/auto-increment'
 
 export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
-  field: "id",
+  field: 'id',
   startAt: 1,
   incrementBy: 1,
-  trackerCollection: "identitycounters",
-  trackerModelName: "identitycounter"
+  trackerCollection: 'identitycounters',
+  trackerModelName: 'identitycounter',
   // https://github.com/typegoose/auto-increment
   // https://github.com/typegoose/auto-increment/blob/master/src/autoIncrement.ts
   // https://github.com/typegoose/auto-increment/issues/11

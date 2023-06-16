@@ -1,9 +1,9 @@
 // https://docs.nestjs.com/security/authentication#implementing-passport-jwt
-import { Injectable } from "@nestjs/common"
-import { PassportStrategy } from "@nestjs/passport"
-import { ExtractJwt, Strategy } from "passport-jwt"
-import { HttpUnauthorizedError } from "@app/errors/unauthorized.error"
-import { UserService } from "./user.service"
+import { Injectable } from '@nestjs/common'
+import { PassportStrategy } from '@nestjs/passport'
+import { ExtractJwt, Strategy } from 'passport-jwt'
+import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
+import type { UserService } from './user.service'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -11,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: "better-gpt"
+      secretOrKey: 'better-gpt',
     })
   }
 
@@ -20,13 +20,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @param payload token 解码后的 data
    * @returns
    */
-  validate(payload: any) {
-    console.log(payload, "jwt strategy")
-    const data = this.userService.validateAuthData(payload)
-    if (data) {
+  async validate(payload: any) {
+    console.log(payload, 'jwt strategy')
+    const data = await this.userService.validateAuthData(payload)
+    if (data)
       return data
-    } else {
+    else
       throw new HttpUnauthorizedError()
-    }
   }
 }

@@ -4,21 +4,23 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Request } from "express"
-import { Observable } from "rxjs"
-import { map } from "rxjs/operators"
+import type { Request } from 'express'
+import type { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import type {
+  CallHandler,
+  ExecutionContext,
+  NestInterceptor,
+} from '@nestjs/common'
 import {
   Injectable,
-  NestInterceptor,
-  CallHandler,
-  ExecutionContext
-} from "@nestjs/common"
+} from '@nestjs/common'
+import type { HttpResponseSuccess } from '@app/interfaces/response.interface'
 import {
-  HttpResponseSuccess,
-  ResponseStatus
-} from "@app/interfaces/response.interface"
-import { getResponserOptions } from "@app/decorators/responser.decorator"
-import * as TEXT from "@app/constants/text.constant"
+  ResponseStatus,
+} from '@app/interfaces/response.interface'
+import { getResponserOptions } from '@app/decorators/responser.decorator'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class TransformInterceptor
@@ -26,18 +28,16 @@ import * as TEXT from "@app/constants/text.constant"
  */
 @Injectable()
 export class TransformInterceptor<T>
-  implements NestInterceptor<T, T | HttpResponseSuccess<T>>
-{
+implements NestInterceptor<T, T | HttpResponseSuccess<T>> {
   intercept(
     context: ExecutionContext,
-    next: CallHandler<T>
+    next: CallHandler<T>,
   ): Observable<T | HttpResponseSuccess<T>> {
     const call$ = next.handle()
     const target = context.getHandler()
     const { successMessage, transform, paginate } = getResponserOptions(target)
-    if (!transform) {
+    if (!transform)
       return call$
-    }
 
     const request = context.switchToHttp().getRequest<Request>()
     return call$.pipe(
@@ -52,7 +52,7 @@ export class TransformInterceptor<T>
             method: request.method,
             routes: request.params,
             // payload: request.$validatedPayload || {},
-            payload: {}
+            payload: {},
           },
           result: paginate
             ? {
@@ -61,12 +61,12 @@ export class TransformInterceptor<T>
                   total: data.total,
                   current_page: data.page,
                   per_page: data.perPage,
-                  total_page: data.totalPage
-                }
+                  total_page: data.totalPage,
+                },
               }
-            : data
+            : data,
         }
-      })
+      }),
     )
   }
 }

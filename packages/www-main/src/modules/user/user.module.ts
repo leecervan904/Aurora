@@ -1,27 +1,27 @@
-import type jwt from "jsonwebtoken"
-import { Module } from "@nestjs/common"
-import { JwtModule } from "@nestjs/jwt"
-import { PassportModule } from "@nestjs/passport"
-import { UserService } from "./user.service"
-import { UserController } from "./user.controller"
-import { UserProvider } from "./user.model"
-import { BannedTokenProvider } from "./models/user-token.model"
-import { UserSmsCodeProvider } from "./models/user-sms-code.model"
-import { UserMailerCodeProvider } from "./models/UserMailerCode.model"
-import { JwtStrategy } from "./jwt.strategy"
-import { MailerService } from "../mailer/mailer.service"
-import { ChatdocCategoryProvider } from "../chatdoc-category/category.model"
-import { CategoryService } from "../chatdoc-category/category.service"
+import type jwt from 'jsonwebtoken'
+import { Module } from '@nestjs/common'
+import { JwtModule } from '@nestjs/jwt'
+import { PassportModule } from '@nestjs/passport'
+import { MailerService } from '../mailer/mailer.service'
+import { ChatdocCategoryProvider } from '../chatdoc-category/category.model'
+import { CategoryService } from '../chatdoc-category/category.service'
+import { UserService } from './user.service'
+import { UserController } from './user.controller'
+import { UserProvider } from './user.model'
+import { BannedTokenProvider } from './models/user-token.model'
+import { UserSmsCodeProvider } from './models/user-sms-code.model'
+import { UserMailerCodeProvider } from './models/UserMailerCode.model'
+import { JwtStrategy } from './jwt.strategy'
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: "jwt" }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      privateKey: "better-gpt" as jwt.Secret,
+      privateKey: 'better-gpt' as jwt.Secret,
       signOptions: {
-        expiresIn: 3600
-      }
-    })
+        expiresIn: 3600,
+      },
+    }),
   ],
   controllers: [UserController],
   providers: [
@@ -33,8 +33,8 @@ import { CategoryService } from "../chatdoc-category/category.service"
     JwtStrategy,
     MailerService,
     CategoryService,
-    ChatdocCategoryProvider
+    ChatdocCategoryProvider,
   ],
-  exports: [UserService]
+  exports: [UserService],
 })
 export class UserModule {}

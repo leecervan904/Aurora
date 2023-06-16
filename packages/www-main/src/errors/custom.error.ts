@@ -1,5 +1,5 @@
-import { HttpException, HttpStatus } from "@nestjs/common"
-import { ExceptionInfo } from "@app/interfaces/response.interface"
+import { HttpException, HttpStatus } from '@nestjs/common'
+import type { ExceptionInfo } from '@app/interfaces/response.interface'
 
 /**
  * @class CustomError

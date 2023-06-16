@@ -1,25 +1,26 @@
-import lodash from "lodash"
-import { SetMetadata, HttpStatus } from "@nestjs/common"
-import { ResponseMessage } from "@app/interfaces/response.interface"
-import { UNDEFINED } from "@app/constants/value.constant"
-import { reflector } from "@app/constants/reflector.constant"
-import * as META from "@app/constants/meta.constant"
-import * as TEXT from "@app/constants/text.constant"
+import lodash from 'lodash'
+import type { HttpStatus } from '@nestjs/common'
+import { SetMetadata } from '@nestjs/common'
+import type { ResponseMessage } from '@app/interfaces/response.interface'
+import { UNDEFINED } from '@app/constants/value.constant'
+import { reflector } from '@app/constants/reflector.constant'
+import * as META from '@app/constants/meta.constant'
+import * as TEXT from '@app/constants/text.constant'
 
 export interface ResponserOptions
-  extends Omit<DecoratorCreatorOption, "usePaginate"> {
+  extends Omit<DecoratorCreatorOption, 'usePaginate'> {
   transform?: boolean
   paginate?: boolean
 }
 
-export const getResponserOptions = (target: any): ResponserOptions => {
+export function getResponserOptions(target: any): ResponserOptions {
   return {
     errorCode: reflector.get(META.HTTP_ERROR_CODE, target),
     successCode: reflector.get(META.HTTP_SUCCESS_CODE, target),
     errorMessage: reflector.get(META.HTTP_ERROR_MESSAGE, target),
     successMessage: reflector.get(META.HTTP_SUCCESS_MESSAGE, target),
     transform: reflector.get(META.HTTP_RESPONSE_TRANSFORM, target),
-    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target)
+    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target),
   }
 }
 
@@ -40,27 +41,27 @@ interface HandleOption {
 
 type HandleOptionConfig = ResponseMessage | HandleOption
 
-const createDecorator = (options: DecoratorCreatorOption): MethodDecorator => {
-  const { errorMessage, successMessage, errorCode, successCode, usePaginate } =
-    options
+function createDecorator(options: DecoratorCreatorOption): MethodDecorator {
+  const { errorMessage, successMessage, errorCode, successCode, usePaginate }
+    = options
   return (_, __, descriptor: PropertyDescriptor) => {
     SetMetadata(META.HTTP_RESPONSE_TRANSFORM, true)(descriptor.value)
-    if (errorCode) {
+    if (errorCode)
       SetMetadata(META.HTTP_ERROR_CODE, errorCode)(descriptor.value)
-    }
-    if (successCode) {
+
+    if (successCode)
       SetMetadata(META.HTTP_SUCCESS_CODE, successCode)(descriptor.value)
-    }
-    if (errorMessage) {
+
+    if (errorMessage)
       SetMetadata(META.HTTP_ERROR_MESSAGE, errorMessage)(descriptor.value)
-    }
-    if (successMessage) {
+
+    if (successMessage)
       SetMetadata(META.HTTP_SUCCESS_MESSAGE, successMessage)(descriptor.value)
-    }
+
     if (usePaginate) {
       SetMetadata(
         META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE,
-        true
+        true,
       )(descriptor.value)
     }
     return descriptor
@@ -71,10 +72,8 @@ const createDecorator = (options: DecoratorCreatorOption): MethodDecorator => {
  * @exports success
  * @example ```@HttpProcessor.success('error message', 500)```
  */
-export const error = (
-  message: ResponseMessage,
-  statusCode?: HttpStatus
-): MethodDecorator => {
+export function error(message: ResponseMessage,
+  statusCode?: HttpStatus): MethodDecorator {
   return createDecorator({ errorMessage: message, errorCode: statusCode })
 }
 
@@ -82,13 +81,11 @@ export const error = (
  * @exports success
  * @example ```@HttpProcessor.success('success message', 200)```
  */
-export const success = (
-  message: ResponseMessage,
-  statusCode?: HttpStatus
-): MethodDecorator => {
+export function success(message: ResponseMessage,
+  statusCode?: HttpStatus): MethodDecorator {
   return createDecorator({
     successMessage: message,
-    successCode: statusCode
+    successCode: statusCode,
   })
 }
 
@@ -113,7 +110,7 @@ export function handle(...args) {
     successCode,
     errorMessage,
     successMessage,
-    usePaginate
+    usePaginate,
   })
 }
 
@@ -121,7 +118,7 @@ export function handle(...args) {
  * @exports paginate
  * @example ```@HttpProcessor.paginate()```
  */
-export const paginate = (): MethodDecorator => {
+export function paginate(): MethodDecorator {
   return createDecorator({ usePaginate: true })
 }
 

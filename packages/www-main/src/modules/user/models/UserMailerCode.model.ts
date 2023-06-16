@@ -1,11 +1,11 @@
-import { prop, modelOptions } from "@typegoose/typegoose"
-import { IsString, IsByteLength, IsEmail } from "class-validator"
-import { getProviderByTypegooseClass } from "@app/transformers/model.transformer"
+import { modelOptions, prop } from '@typegoose/typegoose'
+import { IsByteLength, IsEmail, IsString } from 'class-validator'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
 @modelOptions({
   schemaOptions: {
-    versionKey: false
-  }
+    versionKey: false,
+  },
 })
 export class UserMailerCode {
   @IsString()
@@ -18,9 +18,9 @@ export class UserMailerCode {
   @prop({ required: true, unique: true })
   code: string
 
-  @prop({ type: Date, expires: "10min", default: Date.now })
+  @prop({ type: Date, expires: '10min', default: Date.now })
   createdAt: Date
 }
 
-export const UserMailerCodeProvider =
-  getProviderByTypegooseClass(UserMailerCode)
+export const UserMailerCodeProvider
+  = getProviderByTypegooseClass(UserMailerCode)

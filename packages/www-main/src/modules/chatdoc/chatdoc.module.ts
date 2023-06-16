@@ -1,10 +1,9 @@
-import { Module } from "@nestjs/common"
-import { ChatdocService } from "./chatdoc.service"
-import { ChatdocController } from "./chatdoc.controller"
-import { ChatdocProvider } from "./chatdoc.model"
-import { ChatdocTagProvider } from "../chatdoc-tag/tag.model"
-import { ChatdocCategoryProvider } from "../chatdoc-category/category.model"
-import { UserService } from "@app/modules/user/user.service"
+import { Module } from '@nestjs/common'
+import { ChatdocTagProvider } from '../chatdoc-tag/tag.model'
+import { ChatdocCategoryProvider } from '../chatdoc-category/category.model'
+import { ChatdocService } from './chatdoc.service'
+import { ChatdocController } from './chatdoc.controller'
+import { ChatdocProvider } from './chatdoc.model'
 
 @Module({
   controllers: [ChatdocController],
@@ -12,7 +11,7 @@ import { UserService } from "@app/modules/user/user.service"
     ChatdocService,
     ChatdocProvider,
     ChatdocCategoryProvider,
-    ChatdocTagProvider
-  ]
+    ChatdocTagProvider,
+  ],
 })
 export class ChatdocModule {}

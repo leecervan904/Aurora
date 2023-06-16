@@ -1,6 +1,6 @@
-import { UnauthorizedException } from "@nestjs/common"
-import { ResponseMessage } from "@app/interfaces/response.interface"
-import * as TEXT from "@app/constants/text.constant"
+import { UnauthorizedException } from '@nestjs/common'
+import type { ResponseMessage } from '@app/interfaces/response.interface'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpUnauthorizedError

@@ -1,20 +1,21 @@
-import { Test, TestingModule } from "@nestjs/testing"
-import { TagController } from "./tag.controller"
-import { TagService } from "./tag.service"
+import type { TestingModule } from '@nestjs/testing'
+import { Test } from '@nestjs/testing'
+import { TagController } from './tag.controller'
+import { TagService } from './tag.service'
 
-describe("TagController", () => {
+describe('TagController', () => {
   let controller: TagController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TagController],
-      providers: [TagService]
+      providers: [TagService],
     }).compile()
 
     controller = module.get<TagController>(TagController)
   })
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(controller).toBeDefined()
   })
 })

@@ -1,10 +1,11 @@
-import { Connection } from "mongoose"
-import { Provider, Inject } from "@nestjs/common"
-import { getModelForClass } from "@typegoose/typegoose"
+import type { Connection } from 'mongoose'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
+import { getModelForClass } from '@typegoose/typegoose'
 import {
   DB_CONNECTION_TOKEN,
-  DB_MODEL_TOKEN_SUFFIX
-} from "@app/constants/system.constant"
+  DB_MODEL_TOKEN_SUFFIX,
+} from '@app/constants/system.constant'
 
 export interface TypegooseClass {
   new (...args: any[])
@@ -16,13 +17,13 @@ export function getModelToken(modelName: string): string {
 
 // Get Provider by Class
 export function getProviderByTypegooseClass(
-  typegooseClass: TypegooseClass
+  typegooseClass: TypegooseClass,
 ): Provider {
   return {
     provide: getModelToken(typegooseClass.name),
     useFactory: (connection: Connection) =>
       getModelForClass(typegooseClass, { existingConnection: connection }),
-    inject: [DB_CONNECTION_TOKEN]
+    inject: [DB_CONNECTION_TOKEN],
   }
 }
 

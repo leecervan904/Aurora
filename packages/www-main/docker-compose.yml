@@ -20,5 +20,5 @@ services:
       - mongo_data:/data/db
     ports:
       - '9900:27017'
-volumes:
-  mongo_data:
+# volumes:
+# mongo_data:

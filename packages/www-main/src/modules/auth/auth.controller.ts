@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
+  Controller,
+  Delete,
+  Get,
   Param,
-  Delete
-} from "@nestjs/common"
-import { AuthService } from "./auth.service"
-import { CreateAuthDto, UpdateAuthDto } from "./auth.dto"
-import { ApiTags } from "@nestjs/swagger"
+  Patch,
+  Post,
+} from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import type { AuthService } from './auth.service'
+import type { CreateAuthDto, UpdateAuthDto } from './auth.dto'
 
-@ApiTags("Auth")
-@Controller("auth")
+@ApiTags('Auth')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -26,18 +26,18 @@ export class AuthController {
     return this.authService.findAll()
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.authService.findOne(+id)
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
     return this.authService.update(+id, updateAuthDto)
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
+  @Delete(':id')
+  remove(@Param('id') id: string) {
     return this.authService.remove(+id)
   }
 }

@@ -1,11 +1,11 @@
-import lodashMerge from "lodash/merge"
+import lodashMerge from 'lodash/merge'
 import type {
-  Model,
   Document,
-  Schema,
   FilterQuery,
-  QueryOptions
-} from "mongoose"
+  Model,
+  QueryOptions,
+  Schema,
+} from 'mongoose'
 
 export interface PaginateResult<T> {
   data: Array<T>
@@ -26,20 +26,20 @@ export interface PaginateOptions {
   /** original options */
   projection?: string | Record<string, unknown> | null
   /** mongoose queryOptions */
-  sort?: QueryOptions["sort"]
-  lean?: QueryOptions["lean"]
-  populate?: QueryOptions["populate"]
+  sort?: QueryOptions['sort']
+  lean?: QueryOptions['lean']
+  populate?: QueryOptions['populate']
   /** original options for `model.find` */
   $queryOptions?: QueryOptions
 }
 
 const DEFAULT_OPTIONS: Required<
-  Pick<PaginateOptions, "page" | "pageSize" | "dateSort" | "lean">
+  Pick<PaginateOptions, 'page' | 'pageSize' | 'dateSort' | 'lean'>
 > = Object.freeze({
   page: 1,
   pageSize: 16,
   dateSort: -1,
-  lean: false
+  lean: false,
 })
 
 export interface PaginateModel<T extends Document> extends Model<T> {
@@ -56,7 +56,7 @@ export function mongoosePaginate(schema: Schema) {
 export function paginate<T>(
   this: Model<T>,
   filterQuery: PaginateQuery<T> = {},
-  options: PaginateOptions = {}
+  options: PaginateOptions = {},
 ) {
   const {
     page,
@@ -69,7 +69,7 @@ export function paginate<T>(
 
   const findQueryOptions = {
     ...resetOptions,
-    ...$queryOptions
+    ...$queryOptions,
   }
 
   // query
@@ -80,7 +80,7 @@ export function paginate<T>(
     skip: (page - 1) * pageSize,
     limit: pageSize,
     sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
-    ...findQueryOptions
+    ...findQueryOptions,
   }).exec()
 
   return Promise.all([countQuery, pageQuery]).then(
@@ -91,10 +91,10 @@ export function paginate<T>(
           total: countResult,
           page,
           pageSize,
-          totalPage: Math.ceil(countResult / pageSize) || 1
-        }
+          totalPage: Math.ceil(countResult / pageSize) || 1,
+        },
       }
       return result
-    }
+    },
   )
 }

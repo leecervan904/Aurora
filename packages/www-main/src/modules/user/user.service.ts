@@ -1,30 +1,25 @@
-import { Injectable } from "@nestjs/common"
-import { JwtService } from "@nestjs/jwt"
-import { InjectModel } from "@app/transformers/model.transformer"
-import { MongooseModel } from "@app/interfaces/mongoose.interface"
-import { User } from "./user.model"
-import { UserSmsCode } from "./models/user-sms-code.model"
-import { BannedToken } from "./models/user-token.model"
-import { UserMailerCode } from "./models/UserMailerCode.model"
-import { MailerService } from "../mailer/mailer.service"
-import { CategoryService } from "../chatdoc-category/category.service"
-
+import { Injectable } from '@nestjs/common'
+import type { JwtService } from '@nestjs/jwt'
+import { InjectModel } from '@app/transformers/model.transformer'
+import type { MongooseModel } from '@app/interfaces/mongoose.interface'
 import {
+  generateRandomCode,
+} from '@app/utils'
+import { checkPassword, encrypt } from '@app/utils/encrypt'
+import type { MailerService } from '../mailer/mailer.service'
+import type { CategoryService } from '../chatdoc-category/category.service'
+import { User } from './user.model'
+import { UserSmsCode } from './models/user-sms-code.model'
+import { BannedToken } from './models/user-token.model'
+import { UserMailerCode } from './models/UserMailerCode.model'
+
+import type {
   CreateUserDto,
-  UpdateUserDto,
-  SendSmsDto,
-  UserSmsLoginDto,
-  UserLogoutDto,
   SendEmailDto,
-  UserLoginDto
-} from "./user.dto"
-
-import {
-  generateRandomUserName,
-  generateSmsCode,
-  generateRandomCode
-} from "@app/utils"
-import { encrypt, checkPassword } from "@app/utils/encrypt"
+  UpdateUserDto,
+  UserLoginDto,
+  UserLogoutDto,
+} from './user.dto'
 
 @Injectable()
 export class UserService {
@@ -38,7 +33,7 @@ export class UserService {
     @InjectModel(UserSmsCode)
     private readonly userSmsCodeModel: MongooseModel<UserSmsCode>,
     @InjectModel(UserMailerCode)
-    private readonly userMailerModel: MongooseModel<UserMailerCode>
+    private readonly userMailerModel: MongooseModel<UserMailerCode>,
   ) {}
 
   async findAll() {
@@ -49,12 +44,12 @@ export class UserService {
         id: 1,
         username: 1,
         nickname: 1,
-        avatar: 1
+        avatar: 1,
       })
       .exec()
 
     return {
-      users
+      users,
     }
   }
 
@@ -66,13 +61,12 @@ export class UserService {
         id: 1,
         username: 1,
         nickname: 1,
-        avatar: 1
+        avatar: 1,
       })
       .exec()
 
-    if (!user) {
-      throw "用户不存在"
-    }
+    if (!user)
+      throw '用户不存在'
 
     return { user }
   }
@@ -90,30 +84,28 @@ export class UserService {
       {
         nickname,
         email,
-        avatar
-      }
+        avatar,
+      },
     )
 
-    if (!user) {
-      throw "user not found"
-    }
+    if (!user)
+      throw 'user not found'
 
     return {
-      status: "success",
+      status: 'success',
       user: {
-        id: user.id
-      }
+        id: user.id,
+      },
     }
   }
 
   async remove(id: number) {
     const removedUser = await this.userModel.findOneAndRemove({ id })
-    if (!removedUser) {
-      throw "用户不存在"
-    }
+    if (!removedUser)
+      throw '用户不存在'
 
     return {
-      status: "success"
+      status: 'success',
     }
   }
 
@@ -128,7 +120,7 @@ export class UserService {
   createToken(data: any) {
     return {
       accessToken: this.jwtService.sign({ data }),
-      expiresIn: 3600
+      expiresIn: 3600,
     }
   }
 
@@ -136,7 +128,7 @@ export class UserService {
     // console.log(payload, 'auth validate');
     const { username, id } = payload.data
     const existUser = await this.userModel.findOne({ username, id })
-    return !!existUser ? payload.data : null
+    return existUser ? payload.data : null
   }
 
   // async signup(createUserDto: CreateUserDto) {
@@ -243,53 +235,50 @@ export class UserService {
     const { username, password, email, code } = createUserDto
 
     const existUser = await this.userModel.findOne({
-      $or: [{ username }, { email }]
+      $or: [{ username }, { email }],
     })
-    if (existUser) {
-      throw "用户名或邮箱已被使用"
-    }
+    if (existUser)
+      throw '用户名或邮箱已被使用'
 
     const mailerCode = await this.userMailerModel.findOne({ email, code })
-    if (!mailerCode) {
-      throw "验证码错误"
-    }
+    if (!mailerCode)
+      throw '验证码错误'
 
     const encryptPassword = encrypt(password)
 
     const newUser = await this.userModel.create({
       username,
       password: encryptPassword,
-      email
+      email,
     })
 
     // 为用户创建一个默认的分类
     await this.categoryService.create(newUser.id, {
-      name: "未分类",
-      slug: "unclassified",
-      description: "未分类"
+      name: '未分类',
+      slug: 'unclassified',
+      description: '未分类',
     })
 
     // 生成 token，前端处理重定向
     const accessToken = this.createToken({
       username: newUser.username,
-      id: newUser.id
+      id: newUser.id,
     })
 
     return {
       userInfo: {
         id: newUser.id,
-        name: newUser.username
+        name: newUser.username,
       },
-      token: accessToken
+      token: accessToken,
     }
   }
 
   async sendEmailCode(sendEmailDto: SendEmailDto) {
     const { email } = sendEmailDto
     const existUser = await this.userModel.findOne({ email })
-    if (existUser) {
-      throw "此邮箱已被注册"
-    }
+    if (existUser)
+      throw '此邮箱已被注册'
 
     // 前端控制发送频率，后端只做简单限流
     // const existEmailCode = await this.userMailerModel.findOne({ email });
@@ -303,28 +292,30 @@ export class UserService {
     await this.mailerService.sendMail(email, randomCode)
 
     return {
-      message: "邮件已发送，请注意查收"
+      message: '邮件已发送，请注意查收',
     }
   }
 
   // 检查用户名是否已被注册
   async checkUsernameValid(username: string) {
-    if (!username) throw "用户名不能为空"
+    if (!username)
+      throw '用户名不能为空'
 
     const existUser = await this.userModel.findOne({ username })
 
     return {
-      valid: !existUser
+      valid: !existUser,
     }
   }
 
   // 检查邮箱是否已被注册
   async checkEmailValid(email: string) {
-    if (!email) throw "邮箱不能为空"
+    if (!email)
+      throw '邮箱不能为空'
     const existEmail = await this.userModel.findOne({ email })
 
     return {
-      valid: !existEmail
+      valid: !existEmail,
     }
   }
 
@@ -332,31 +323,29 @@ export class UserService {
     const { username, password, email } = userLoginDto
     const query: any = {}
 
-    if (username) {
+    if (username)
       query.username = username
-    } else if (email) {
+    else if (email)
       query.email = email
-    } else {
-      throw "必须填入用户名或邮箱"
-    }
+    else
+      throw '必须填入用户名或邮箱'
 
     const user = await this.userModel.findOne(query)
-    if (!user || !checkPassword(user.password, password)) {
-      throw "用户不存在或密码错误"
-    }
+    if (!user || !checkPassword(user.password, password))
+      throw '用户不存在或密码错误'
 
     const accessToken = this.createToken({
       username: user.username,
-      id: user.id
+      id: user.id,
     })
 
     return {
-      message: "登录成功",
+      message: '登录成功',
       userInfo: {
         id: user.id,
-        name: user.username
+        name: user.username,
       },
-      token: accessToken
+      token: accessToken,
     }
   }
 
@@ -364,13 +353,13 @@ export class UserService {
     const { accessToken } = userLogoutDto
     await this._setTokenBanned(accessToken)
 
-    return "success"
+    return 'success'
   }
 
   async _setTokenBanned(token: string, expires = 24 * 60 * 60 * 1000) {
     await this.bannedToken.create({
       token,
-      expires
+      expires,
     })
   }
 }

@@ -4,10 +4,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsIn, IsInt, IsOptional, IsNotEmpty, Min, Max } from "class-validator"
-import { Transform } from "class-transformer"
-import { SortType } from "@app/constants/biz.constant"
-import { unknownToNumber } from "@app/transformers/value.transformer"
+import { IsIn, IsInt, IsNotEmpty, IsOptional, Max, Min } from 'class-validator'
+import { Transform } from 'class-transformer'
+import { SortType } from '@app/constants/biz.constant'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export class PaginateBaseOptionDto {
   @IsNotEmpty()

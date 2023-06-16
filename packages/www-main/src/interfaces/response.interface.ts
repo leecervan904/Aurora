@@ -1,7 +1,7 @@
 export type ResponseMessage = string
 export enum ResponseStatus {
-  Error = "error",
-  Success = "success"
+  Error = 'error',
+  Success = 'success',
 }
 
 export interface HttpResponseBase {
@@ -12,9 +12,9 @@ export interface HttpResponseBase {
 export type ExceptionInfo =
   | ResponseMessage
   | {
-      message: ResponseMessage
-      error?: any
-    }
+    message: ResponseMessage
+    error?: any
+  }
 
 // paginate data
 export interface HttpPaginateResult<T> {

@@ -1,4 +1,4 @@
-import { isNumberString, isNumber, isDateString } from "class-validator"
+import { isDateString, isNumber, isNumberString } from 'class-validator'
 
 export function unknownToNumber(value: unknown): number | unknown {
   return isNumberString(value) ? Number(value) : value
@@ -7,7 +7,7 @@ export function unknownToNumber(value: unknown): number | unknown {
 export function numberToBoolean(value: number): boolean | number {
   return isNumber(value, {
     allowNaN: false,
-    allowInfinity: false
+    allowInfinity: false,
   })
     ? Boolean(value)
     : value

@@ -1,19 +1,20 @@
-import { prop, modelOptions, plugin, Ref } from "@typegoose/typegoose"
-import { AutoIncrementID } from "@typegoose/auto-increment"
-import { generalAutoIncrementIDConfig } from "@app/constants/increment.constant"
-import { IsInt, IsString, IsNotEmpty } from "class-validator"
-import { getProviderByTypegooseClass } from "@app/transformers/model.transformer"
-import { ChatdocCategory } from "@app/modules/chatdoc-category/category.model"
-import { ChatdocTag } from "@app/modules/chatdoc-tag/tag.model"
-import { mongoosePaginate } from "@app/utils/paginate"
+import type { Ref } from '@typegoose/typegoose'
+import { modelOptions, plugin, prop } from '@typegoose/typegoose'
+import { AutoIncrementID } from '@typegoose/auto-increment'
+import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { IsInt, IsNotEmpty, IsString } from 'class-validator'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { ChatdocCategory } from '@app/modules/chatdoc-category/category.model'
+import { ChatdocTag } from '@app/modules/chatdoc-tag/tag.model'
+import { mongoosePaginate } from '@app/utils/paginate'
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
     toObject: { getters: true },
-    timestamps: true
-  }
+    timestamps: true,
+  },
 })
 export class Chatdoc {
   @IsInt()
@@ -37,14 +38,14 @@ export class Chatdoc {
   @prop({
     ref: ChatdocCategory,
     // index: true,
-    default: null
+    default: null,
   })
   categoryIds: Ref<ChatdocCategory>[]
 
   @prop({
     ref: ChatdocTag,
     // index: true,
-    default: null
+    default: null,
   })
   tagIds: Ref<ChatdocTag>[]
 
