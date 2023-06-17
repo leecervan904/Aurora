@@ -1,13 +1,13 @@
-import { prop, modelOptions } from '@typegoose/typegoose';
-import { IsString, IsDefined, IsOptional } from 'class-validator';
-import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
+import { modelOptions, prop } from '@typegoose/typegoose'
+import { IsDefined, IsOptional, IsString } from 'class-validator'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
 export const DEFAULT_AUTH = Object.freeze<Auth>({
   name: '',
   slogan: '',
   avatar: '',
   phone: '',
-});
+})
 
 @modelOptions({
   schemaOptions: {
@@ -15,32 +15,32 @@ export const DEFAULT_AUTH = Object.freeze<Auth>({
   },
 })
 export class Auth {
-  @IsString({ message: "what's your name?" })
+  @IsString({ message: 'what\'s your name?' })
   @IsDefined()
   @prop({ required: true })
-  name: string;
+  name: string
 
   @IsString()
   @IsDefined()
   @prop({ required: true })
-  slogan: string;
+  slogan: string
 
   @IsString()
   @IsOptional()
   @prop({ default: '' })
-  avatar: string;
+  avatar: string
 
   @IsString()
   @prop({ select: false })
-  password?: string;
+  password?: string
 
   @IsString()
   @prop({ required: true })
-  phone: string;
+  phone: string
 
   @IsString()
   @prop({ select: false })
-  email?: string;
+  email?: string
 }
 
-export const AuthProvider = getProviderByTypegooseClass(Auth);
+export const AuthProvider = getProviderByTypegooseClass(Auth)

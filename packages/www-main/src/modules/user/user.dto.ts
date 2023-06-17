@@ -1,14 +1,14 @@
 import {
-  IsString,
-  IsNotEmpty,
-  IsMobilePhone,
   IsByteLength,
   IsDefined,
   IsEmail,
+  IsMobilePhone,
+  IsNotEmpty,
   IsOptional,
-} from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+  IsString,
+} from 'class-validator'
+import { PartialType } from '@nestjs/mapped-types'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 /**
  * 一期先做短信登录
@@ -19,7 +19,7 @@ export class CreateUserDto {
   @IsString({ message: 'must be string' })
   @IsNotEmpty({ message: 'should be not empty' })
   @IsDefined()
-  username: string;
+  username: string
 
   // @IsString({ message: 'must be string' })
   // @IsNotEmpty({ message: 'should be not empty' })
@@ -35,28 +35,28 @@ export class CreateUserDto {
   @IsString({ message: 'must be string' })
   @IsNotEmpty({ message: 'should be not empty' })
   @IsDefined()
-  password: string;
+  password: string
 
   @ApiProperty({ description: '邮箱' })
   @IsString({ message: 'must be string' })
   @IsDefined()
-  email: string;
+  email: string
 
   @ApiProperty({ description: '邮箱验证码' })
   @IsString()
   // @IsByteLength(4, 6)
-  code: string;
+  code: string
 
   @ApiPropertyOptional({ description: '昵称' })
   @IsString({ message: 'must be string' })
   @IsOptional()
-  nickname?: string;
+  nickname?: string
 
   @ApiPropertyOptional({ description: '头像' })
   @IsString({ message: 'must be string' })
   // @IsDefined()
   @IsOptional()
-  avatar?: string;
+  avatar?: string
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
@@ -66,14 +66,14 @@ export class SendEmailDto {
   @IsString()
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email: string
 }
 
 export class SendSmsDto {
   @IsString()
   @IsNotEmpty()
   @IsMobilePhone('zh-CN')
-  phone: string;
+  phone: string
 }
 
 /**
@@ -83,35 +83,35 @@ export class UserSmsLoginDto {
   @IsString()
   @IsNotEmpty()
   @IsMobilePhone('zh-CN')
-  phone: string;
+  phone: string
 
   @IsString()
   @IsByteLength(4, 6)
-  smsCode: string;
+  smsCode: string
 }
 
 export class UserLoginDto {
   @ApiPropertyOptional({ description: '用户名' })
   @IsString()
   @IsOptional()
-  username?: string;
+  username?: string
 
   @ApiPropertyOptional({ description: '邮箱' })
   @IsString()
   @IsOptional()
   @IsEmail()
-  email?: string;
+  email?: string
 
   @ApiProperty({ description: '密码' })
   @IsString()
   @IsNotEmpty()
-  password: string;
+  password: string
 }
 
 export class UserLogoutDto {
   @IsString()
   @IsNotEmpty()
-  accessToken: string;
+  accessToken: string
 
   // @IsString()
   // @IsNotEmpty()

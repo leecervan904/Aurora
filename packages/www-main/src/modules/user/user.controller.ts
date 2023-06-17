@@ -1,30 +1,28 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
   Req,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+  UseGuards,
+} from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { Responser } from '@app/decorators/responser.decorator';
+import { Responser } from '@app/decorators/responser.decorator'
 
-import { UserService } from './user.service';
+import { UserService } from './user.service'
 import {
   CreateUserDto,
-  UpdateUserDto,
-  SendSmsDto,
-  UserSmsLoginDto,
-  UserLogoutDto,
   SendEmailDto,
+  UpdateUserDto,
   UserLoginDto,
-} from './user.dto';
+  UserLogoutDto,
+} from './user.dto'
 
 @ApiTags('User')
 // @UseGuards(AuthGuard('jwt'))
@@ -34,7 +32,7 @@ export class UserController {
 
   @Get()
   findAll() {
-    return this.userService.findAll();
+    return this.userService.findAll()
   }
 
   @ApiBearerAuth()
@@ -45,22 +43,22 @@ export class UserController {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(+id)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(+id, updateUserDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(+id)
   }
 
   @Post('email')
   sendEmailCode(@Body() sendEmailDto: SendEmailDto) {
-    return this.userService.sendEmailCode(sendEmailDto);
+    return this.userService.sendEmailCode(sendEmailDto)
   }
 
   // @Post('sms')
@@ -80,22 +78,22 @@ export class UserController {
   })
   signup(@Body() createUserDto: CreateUserDto) {
     // console.log(createUserDto);
-    return this.userService.signup(createUserDto);
+    return this.userService.signup(createUserDto)
   }
 
   @Post('login')
   login(@Body() userLoginDto: UserLoginDto) {
-    return this.userService.login(userLoginDto);
+    return this.userService.login(userLoginDto)
   }
 
   @Post('logout')
   logout(@Body() userLogoutDto: UserLogoutDto) {
-    return this.userService.logout(userLogoutDto);
+    return this.userService.logout(userLogoutDto)
   }
 
   @Post('token/renewal')
   @UseGuards(AuthGuard('jwt'))
   refreshToken(@Req() req) {
-    return this.userService.createToken(req.user);
+    return this.userService.createToken(req.user)
   }
 }

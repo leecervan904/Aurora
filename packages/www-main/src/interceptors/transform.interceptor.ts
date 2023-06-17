@@ -4,21 +4,23 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Request } from 'express';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {
-  Injectable,
-  NestInterceptor,
+import type { Request } from 'express'
+import type { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import type {
   CallHandler,
   ExecutionContext,
-} from '@nestjs/common';
+  NestInterceptor,
+} from '@nestjs/common'
 import {
-  HttpResponseSuccess,
+  Injectable,
+} from '@nestjs/common'
+import type { HttpResponseSuccess } from '@app/interfaces/response.interface'
+import {
   ResponseStatus,
-} from '@app/interfaces/response.interface';
-import { getResponserOptions } from '@app/decorators/responser.decorator';
-import * as TEXT from '@app/constants/text.constant';
+} from '@app/interfaces/response.interface'
+import { getResponserOptions } from '@app/decorators/responser.decorator'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class TransformInterceptor
@@ -26,20 +28,18 @@ import * as TEXT from '@app/constants/text.constant';
  */
 @Injectable()
 export class TransformInterceptor<T>
-  implements NestInterceptor<T, T | HttpResponseSuccess<T>>
-{
+implements NestInterceptor<T, T | HttpResponseSuccess<T>> {
   intercept(
     context: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<T | HttpResponseSuccess<T>> {
-    const call$ = next.handle();
-    const target = context.getHandler();
-    const { successMessage, transform, paginate } = getResponserOptions(target);
-    if (!transform) {
-      return call$;
-    }
+    const call$ = next.handle()
+    const target = context.getHandler()
+    const { successMessage, transform, paginate } = getResponserOptions(target)
+    if (!transform)
+      return call$
 
-    const request = context.switchToHttp().getRequest<Request>();
+    const request = context.switchToHttp().getRequest<Request>()
     return call$.pipe(
       map((data: any) => {
         return {
@@ -65,8 +65,8 @@ export class TransformInterceptor<T>
                 },
               }
             : data,
-        };
+        }
       }),
-    );
+    )
   }
 }

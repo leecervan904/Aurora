@@ -1,4 +1,4 @@
-import { AutoIncrementIDOptions } from '@typegoose/auto-increment';
+import type { AutoIncrementIDOptions } from '@typegoose/auto-increment'
 
 export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
   field: 'id',
@@ -12,4 +12,4 @@ export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
   // https://github.com/typegoose/auto-increment#overwritemodelname
   // fieldKey: 'field',
   // modelNameKey: 'modelName',
-};
+}

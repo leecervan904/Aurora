@@ -1,28 +1,28 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
-  Req,
+  Get,
+  Param,
+  Patch,
+  Post,
   Query,
-} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+  Req,
+  UseGuards,
+} from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { AuthGuard } from '@nestjs/passport'
 
-import { PaginateOptions, PaginateQuery } from '@app/utils/paginate';
-import { ChatdocService } from './chatdoc.service';
+import type { PaginateOptions, PaginateQuery } from '@app/utils/paginate'
+import { ChatdocService } from './chatdoc.service'
 import {
-  CreateChatdocDto,
-  UpdateChatdocDto,
   ChatdocPaginationQueryDto,
+  CreateChatdocDto,
   UpdateChatdocCategoryDto,
+  UpdateChatdocDto,
   UpdateChatdocTagDto,
-} from './chatdoc.dto';
-import { Chatdoc } from './chatdoc.model';
+} from './chatdoc.dto'
+import type { Chatdoc } from './chatdoc.model'
 
 @ApiTags('User ChatDoc')
 @UseGuards(AuthGuard('jwt'))
@@ -32,55 +32,53 @@ export class ChatdocController {
 
   @Post()
   create(@Req() req, @Body() createChatdocDto: CreateChatdocDto) {
-    console.log(createChatdocDto, 'here');
-    return this.chatdocService.create(+req.user.id, createChatdocDto);
+    console.log(createChatdocDto, 'here')
+    return this.chatdocService.create(+req.user.id, createChatdocDto)
   }
 
   @Get('all')
   findAll(@Req() req) {
-    return this.chatdocService.findAll(+req.user.id);
+    return this.chatdocService.findAll(+req.user.id)
   }
 
   @Get('page')
   findMany(@Req() req, @Query() query: ChatdocPaginationQueryDto) {
-    const { sort, page, pageSize, category, tag, ...filters } = query;
+    const { sort, page, pageSize, category, tag, ...filters } = query
 
-    const paginateQuery: PaginateQuery<Chatdoc> = {};
-    const paginateOptions: PaginateOptions = { page, pageSize, dateSort: sort };
+    const paginateQuery: PaginateQuery<Chatdoc> = {}
+    const paginateOptions: PaginateOptions = { page, pageSize, dateSort: sort }
 
     if (category || tag) {
-      paginateQuery.$and = [];
+      paginateQuery.$and = []
 
-      if (category) {
-        paginateQuery.$and.push({ categoryIds: { $in: [category] } });
-      }
+      if (category)
+        paginateQuery.$and.push({ categoryIds: { $in: [category] } })
 
-      if (tag) {
-        paginateQuery.$and.push({ tagIds: { $in: [tag] } });
-      }
+      if (tag)
+        paginateQuery.$and.push({ tagIds: { $in: [tag] } })
     }
 
     // 搜索
     if (filters.keyword) {
-      const trimmed = filters.keyword.trim();
-      const keywordRegExp = new RegExp(trimmed, 'i');
+      const trimmed = filters.keyword.trim()
+      const keywordRegExp = new RegExp(trimmed, 'i')
       paginateQuery.$or = [
         { name: keywordRegExp },
         { slug: keywordRegExp },
         { description: keywordRegExp },
-      ];
+      ]
     }
 
     return this.chatdocService.paginator(
       req.user.id,
       paginateQuery,
       paginateOptions,
-    );
+    )
   }
 
   @Get(':id')
   findOne(@Req() req, @Param('id') id: string) {
-    return this.chatdocService.findOne(+req.user.id, +id);
+    return this.chatdocService.findOne(+req.user.id, +id)
   }
 
   @Patch(':id')
@@ -89,7 +87,7 @@ export class ChatdocController {
     @Param('id') id: string,
     @Body() updateChatdocDto: UpdateChatdocDto,
   ) {
-    return this.chatdocService.update(+req.user.id, +id, updateChatdocDto);
+    return this.chatdocService.update(+req.user.id, +id, updateChatdocDto)
   }
 
   @Patch(':id/category')
@@ -103,7 +101,7 @@ export class ChatdocController {
       +id,
       'category',
       updateChatdocCategoryDto,
-    );
+    )
   }
 
   @Patch(':id/tag')
@@ -117,11 +115,11 @@ export class ChatdocController {
       +id,
       'tag',
       updateChatdocTagDto,
-    );
+    )
   }
 
   @Delete(':id')
   remove(@Req() req, @Param('id') id: string) {
-    return this.chatdocService.remove(+req.user.id, +id);
+    return this.chatdocService.remove(+req.user.id, +id)
   }
 }

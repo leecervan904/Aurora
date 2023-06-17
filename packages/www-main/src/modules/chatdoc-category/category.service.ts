@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto, UpdateCategoryDto } from './category.dto';
-import { InjectModel } from '@app/transformers/model.transformer';
-import { ChatdocCategory } from './category.model';
-import { MongooseModel } from '@app/interfaces/mongoose.interface';
-import { PaginateOptions, PaginateQuery } from '@app/utils/paginate';
+import { Injectable } from '@nestjs/common'
+import { InjectModel } from '@app/transformers/model.transformer'
+import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import type { PaginateOptions, PaginateQuery } from '@app/utils/paginate'
+import { ChatdocCategory } from './category.model'
+import type { CreateCategoryDto, UpdateCategoryDto } from './category.dto'
 
 @Injectable()
 export class CategoryService {
@@ -16,35 +16,34 @@ export class CategoryService {
     const existCategory = await this.categoryModel.findOne({
       userId,
       slug: createCategoryDto.slug,
-    });
-    if (existCategory) {
-      throw 'This category already exists';
-    }
+    })
+    if (existCategory)
+      throw 'This category already exists'
 
     const newCategory = await this.categoryModel.create({
       userId,
       ...createCategoryDto,
-    });
+    })
 
     return {
       data: newCategory,
-    };
+    }
   }
 
   async findAll(userId: number) {
-    const categories = await this.categoryModel.find({ userId });
+    const categories = await this.categoryModel.find({ userId })
 
     return {
       data: categories,
-    };
+    }
   }
 
   async findOne(userId: number, id: number) {
-    const category = await this.categoryModel.findOne({ userId, id });
+    const category = await this.categoryModel.findOne({ userId, id })
 
     return {
       data: category,
-    };
+    }
   }
 
   async update(
@@ -55,10 +54,9 @@ export class CategoryService {
     const existCategory = await this.categoryModel.findOne({
       userId,
       slug: updateCategoryDto.slug,
-    });
-    if (existCategory) {
-      throw 'This category already exists';
-    }
+    })
+    if (existCategory)
+      throw 'This category already exists'
 
     const updatedCategory = await this.categoryModel.findOneAndUpdate(
       {
@@ -66,28 +64,26 @@ export class CategoryService {
         id,
       },
       updateCategoryDto,
-    );
-    if (!updatedCategory) {
-      throw 'This category does not exist';
-    }
+    )
+    if (!updatedCategory)
+      throw 'This category does not exist'
 
     return {
       data: updatedCategory,
-    };
+    }
   }
 
   async remove(userId: number, id: number) {
     const removedCategory = await this.categoryModel.findOneAndRemove({
       userId,
       id,
-    });
-    if (!removedCategory) {
-      throw 'This category does not exist';
-    }
+    })
+    if (!removedCategory)
+      throw 'This category does not exist'
 
     return {
       data: removedCategory,
-    };
+    }
   }
 
   async paginator(
@@ -98,10 +94,10 @@ export class CategoryService {
     const categories = await this.categoryModel.paginate(
       { userId, ...query },
       { ...options, lean: true },
-    );
+    )
 
     return {
       data: categories,
-    };
+    }
   }
 }

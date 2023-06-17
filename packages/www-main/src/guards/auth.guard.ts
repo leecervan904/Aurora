@@ -1,7 +1,8 @@
-import { AuthGuard } from '@nestjs/passport';
-import { ExecutionContext, Injectable } from '@nestjs/common';
-import { HttpUnauthorizedError } from '@app/errors/unauthorized.error';
-import { UNDEFINED } from '@app/constants/value.constant';
+import { AuthGuard } from '@nestjs/passport'
+import type { ExecutionContext } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
+import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
+import { UNDEFINED } from '@app/constants/value.constant'
 
 /**
  * @class AdminOnlyGuard
@@ -11,15 +12,14 @@ import { UNDEFINED } from '@app/constants/value.constant';
 @Injectable()
 export class AdminOnlyGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
+    return super.canActivate(context)
   }
 
   handleRequest(error, authInfo, errInfo) {
     // console.log(authInfo, errInfo);
-    if (authInfo && !error && !errInfo) {
-      return authInfo;
-    } else {
-      throw error || new HttpUnauthorizedError(UNDEFINED, errInfo?.message);
-    }
+    if (authInfo && !error && !errInfo)
+      return authInfo
+    else
+      throw error || new HttpUnauthorizedError(UNDEFINED, errInfo?.message)
   }
 }

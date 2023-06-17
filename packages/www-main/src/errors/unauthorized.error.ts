@@ -1,6 +1,6 @@
-import { UnauthorizedException } from '@nestjs/common';
-import { ResponseMessage } from '@app/interfaces/response.interface';
-import * as TEXT from '@app/constants/text.constant';
+import { UnauthorizedException } from '@nestjs/common'
+import type { ResponseMessage } from '@app/interfaces/response.interface'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpUnauthorizedError
@@ -10,6 +10,6 @@ import * as TEXT from '@app/constants/text.constant';
  */
 export class HttpUnauthorizedError extends UnauthorizedException {
   constructor(message?: ResponseMessage, error?: any) {
-    super(message || TEXT.HTTP_UNAUTHORIZED_TEXT_DEFAULT, error);
+    super(message || TEXT.HTTP_UNAUTHORIZED_TEXT_DEFAULT, error)
   }
 }

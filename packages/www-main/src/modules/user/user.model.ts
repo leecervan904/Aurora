@@ -1,8 +1,8 @@
-import { prop, modelOptions, plugin } from '@typegoose/typegoose';
-import { AutoIncrementID } from '@typegoose/auto-increment';
-import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant';
-import { IsString, IsDefined, IsOptional } from 'class-validator';
-import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
+import { modelOptions, plugin, prop } from '@typegoose/typegoose'
+import { AutoIncrementID } from '@typegoose/auto-increment'
+import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { IsDefined, IsOptional, IsString } from 'class-validator'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
@@ -16,20 +16,20 @@ import { getProviderByTypegooseClass } from '@app/transformers/model.transformer
 })
 export class User {
   @prop({ unique: true })
-  id: number;
+  id: number
 
-  @IsString({ message: "what's your name?" })
+  @IsString({ message: 'what\'s your name?' })
   @IsDefined()
   @prop({ required: true })
-  username: string;
+  username: string
 
   @IsString()
   @prop({ required: true })
-  password: string;
+  password: string
 
   @IsString()
   @prop({ required: true })
-  email: string;
+  email: string
 
   // @IsString()
   // @prop({ required: true })
@@ -37,12 +37,12 @@ export class User {
 
   @IsString()
   @IsDefined()
-  nickname?: string;
+  nickname?: string
 
   @IsString()
   @IsOptional()
   @prop({ default: '' })
-  avatar?: string;
+  avatar?: string
 }
 
-export const UserProvider = getProviderByTypegooseClass(User);
+export const UserProvider = getProviderByTypegooseClass(User)

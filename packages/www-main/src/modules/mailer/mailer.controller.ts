@@ -1,5 +1,5 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { MailerService } from './mailer.service';
+import { Body, Controller, Post } from '@nestjs/common'
+import { MailerService } from './mailer.service'
 
 @Controller('sys/mail')
 export class MailController {
@@ -7,7 +7,7 @@ export class MailController {
 
   @Post()
   async sendMail(@Body('email') email: string) {
-    const result = await this.mailerService.sendMail(email, '123456');
-    return { message: '邮件已发送', result };
+    const result = await this.mailerService.sendMail(email, '123456')
+    return { message: '邮件已发送', result }
   }
 }

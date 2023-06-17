@@ -1,6 +1,6 @@
-import { prop, modelOptions } from '@typegoose/typegoose';
-import { IsString, IsByteLength, IsMobilePhone } from 'class-validator';
-import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
+import { modelOptions, prop } from '@typegoose/typegoose'
+import { IsByteLength, IsMobilePhone, IsString } from 'class-validator'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
 @modelOptions({
   schemaOptions: {
@@ -11,15 +11,15 @@ export class UserSmsCode {
   @IsString()
   @IsMobilePhone('zh-CN')
   @prop({ required: true, unique: true })
-  phone: string;
+  phone: string
 
   @IsString()
   @IsByteLength(4, 6)
   @prop({ required: true, unique: true })
-  code: string;
+  code: string
 
   @prop({ type: Date, expires: '30s', default: Date.now })
-  createdAt: Date;
+  createdAt: Date
 }
 
-export const UserSmsCodeProvider = getProviderByTypegooseClass(UserSmsCode);
+export const UserSmsCodeProvider = getProviderByTypegooseClass(UserSmsCode)

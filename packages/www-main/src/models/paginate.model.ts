@@ -4,10 +4,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsIn, IsInt, IsOptional, IsNotEmpty, Min, Max } from 'class-validator';
-import { Transform } from 'class-transformer';
-import { SortType } from '@app/constants/biz.constant';
-import { unknownToNumber } from '@app/transformers/value.transformer';
+import { IsIn, IsInt, IsNotEmpty, IsOptional, Max, Min } from 'class-validator'
+import { Transform } from 'class-transformer'
+import { SortType } from '@app/constants/biz.constant'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export class PaginateBaseOptionDto {
   @IsNotEmpty()
@@ -15,7 +15,7 @@ export class PaginateBaseOptionDto {
   @Transform(({ value }) => unknownToNumber(value))
   @Min(1)
   @IsInt()
-  page?: number;
+  page?: number
 
   @Min(1)
   @Max(50)
@@ -23,7 +23,7 @@ export class PaginateBaseOptionDto {
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => +value)
-  pageSize?: number;
+  pageSize?: number
 }
 
 export class PaginationOptionDto extends PaginateBaseOptionDto {
@@ -32,7 +32,7 @@ export class PaginationOptionDto extends PaginateBaseOptionDto {
   // @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  sort?: SortType.Asc | SortType.Desc;
+  sort?: SortType.Asc | SortType.Desc
 }
 
 export class PaginateOptionWithHotSortDto extends PaginateBaseOptionDto {
@@ -41,5 +41,5 @@ export class PaginateOptionWithHotSortDto extends PaginateBaseOptionDto {
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  sort?: SortType;
+  sort?: SortType
 }

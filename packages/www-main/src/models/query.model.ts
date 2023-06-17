@@ -1,13 +1,13 @@
 import {
+  IsDateString,
   IsIn,
   IsInt,
-  IsOptional,
   IsNotEmpty,
-  IsDateString,
+  IsOptional,
   IsString,
-} from 'class-validator';
-import { Transform } from 'class-transformer';
-import { unknownToNumber } from '@app/transformers/value.transformer';
+} from 'class-validator'
+import { Transform } from 'class-transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export const enum BooleanNumberValue {
   False = 0, // Number(false)
@@ -19,24 +19,24 @@ export class DateQueryDto {
   @IsDateString()
   @IsNotEmpty()
   @IsOptional()
-  date?: string;
+  date?: string
 }
 
 export class KeywordQueryDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  keyword?: string;
+  keyword?: string
 }
 
 export class DocQueryDto {
   @IsString()
   @IsOptional()
-  category?: string;
+  category?: string
 
   @IsString()
   @IsOptional()
-  tag?: string;
+  tag?: string
 }
 
 // MARK: example
@@ -46,5 +46,5 @@ export class BooleanQueryDto {
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  boolean?: BooleanNumberValue.True | BooleanNumberValue.False;
+  boolean?: BooleanNumberValue.True | BooleanNumberValue.False
 }

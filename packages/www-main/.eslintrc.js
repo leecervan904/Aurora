@@ -1,6 +1,9 @@
 module.exports = {
   root: true,
   extends: ['../../.eslintrc.js'],
+  parserOptions: {
+    emitDecoratorMetadata: true,
+  },
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

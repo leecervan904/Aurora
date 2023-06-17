@@ -41,6 +41,6 @@ export enum CommentState {
   Spam = -2, // 垃圾评论
 }
 
-export const GUESTBOOK_POST_ID = 0;
-export const ROOT_COMMENT_PID = 0;
-export const ROOT_FEEDBACK_TID = 0;
+export const GUESTBOOK_POST_ID = 0
+export const ROOT_COMMENT_PID = 0
+export const ROOT_FEEDBACK_TID = 0

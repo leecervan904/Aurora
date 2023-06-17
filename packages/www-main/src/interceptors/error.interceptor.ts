@@ -1,15 +1,17 @@
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import {
-  Injectable,
-  NestInterceptor,
+import type { Observable } from 'rxjs'
+import { throwError } from 'rxjs'
+import { catchError } from 'rxjs/operators'
+import type {
   CallHandler,
   ExecutionContext,
-  BadGatewayException,
-} from '@nestjs/common';
-import { getResponserOptions } from '@app/decorators/responser.decorator';
-import { CustomError } from '@app/errors/custom.error';
-import * as TEXT from '@app/constants/text.constant';
+  NestInterceptor,
+} from '@nestjs/common'
+import {
+  Injectable,
+} from '@nestjs/common'
+import { getResponserOptions } from '@app/decorators/responser.decorator'
+import { CustomError } from '@app/errors/custom.error'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class ErrorInterceptor
@@ -21,9 +23,9 @@ export class ErrorInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> {
-    const call$ = next.handle();
-    const target = context.getHandler();
-    const { errorCode, errorMessage } = getResponserOptions(target);
+    const call$ = next.handle()
+    const target = context.getHandler()
+    const { errorCode, errorMessage } = getResponserOptions(target)
     return call$.pipe(
       catchError((error) => {
         return throwError(
@@ -32,8 +34,8 @@ export class ErrorInterceptor implements NestInterceptor {
               { message: errorMessage || TEXT.HTTP_DEFAULT_ERROR_TEXT, error },
               errorCode,
             ),
-        );
+        )
       }),
-    );
+    )
   }
 }

@@ -1,36 +1,36 @@
-import lodashMerge from 'lodash/merge';
+import lodashMerge from 'lodash/merge'
 import type {
-  Model,
   Document,
-  Schema,
   FilterQuery,
+  Model,
   QueryOptions,
-} from 'mongoose';
+  Schema,
+} from 'mongoose'
 
 export interface PaginateResult<T> {
-  data: Array<T>;
+  data: Array<T>
   pageInfo: {
-    total: number;
-    page: number;
-    pageSize: number;
-    totalPage: number;
-  };
+    total: number
+    page: number
+    pageSize: number
+    totalPage: number
+  }
 }
 
-export type PaginateQuery<T = any> = FilterQuery<T>;
+export type PaginateQuery<T = any> = FilterQuery<T>
 export interface PaginateOptions {
   /** paginate options */
-  page?: number;
-  pageSize?: number;
-  dateSort?: 1 | -1;
+  page?: number
+  pageSize?: number
+  dateSort?: 1 | -1
   /** original options */
-  projection?: string | Record<string, unknown> | null;
+  projection?: string | Record<string, unknown> | null
   /** mongoose queryOptions */
-  sort?: QueryOptions['sort'];
-  lean?: QueryOptions['lean'];
-  populate?: QueryOptions['populate'];
+  sort?: QueryOptions['sort']
+  lean?: QueryOptions['lean']
+  populate?: QueryOptions['populate']
   /** original options for `model.find` */
-  $queryOptions?: QueryOptions;
+  $queryOptions?: QueryOptions
 }
 
 const DEFAULT_OPTIONS: Required<
@@ -40,17 +40,17 @@ const DEFAULT_OPTIONS: Required<
   pageSize: 16,
   dateSort: -1,
   lean: false,
-});
+})
 
 export interface PaginateModel<T extends Document> extends Model<T> {
   paginate(
     query?: PaginateQuery<T>,
     options?: PaginateOptions,
-  ): Promise<PaginateResult<T>>;
+  ): Promise<PaginateResult<T>>
 }
 
 export function mongoosePaginate(schema: Schema) {
-  schema.statics.paginate = paginate;
+  schema.statics.paginate = paginate
 }
 
 export function paginate<T>(
@@ -65,23 +65,23 @@ export function paginate<T>(
     projection,
     $queryOptions,
     ...resetOptions
-  } = lodashMerge({ ...DEFAULT_OPTIONS }, { ...options });
+  } = lodashMerge({ ...DEFAULT_OPTIONS }, { ...options })
 
   const findQueryOptions = {
     ...resetOptions,
     ...$queryOptions,
-  };
+  }
 
   // query
   const countQuery = this.countDocuments
     ? this.countDocuments(filterQuery).exec()
-    : this.count(filterQuery).exec();
+    : this.count(filterQuery).exec()
   const pageQuery = this.find(filterQuery, projection, {
     skip: (page - 1) * pageSize,
     limit: pageSize,
     sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
     ...findQueryOptions,
-  }).exec();
+  }).exec()
 
   return Promise.all([countQuery, pageQuery]).then(
     ([countResult, pageResult]) => {
@@ -93,8 +93,8 @@ export function paginate<T>(
           pageSize,
           totalPage: Math.ceil(countResult / pageSize) || 1,
         },
-      };
-      return result;
+      }
+      return result
     },
-  );
+  )
 }

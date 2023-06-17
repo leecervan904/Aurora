@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+import { Injectable } from '@nestjs/common'
+import * as nodemailer from 'nodemailer'
 
 @Injectable()
 export class MailerService {
-  private transporter: nodemailer.Transporter;
+  private transporter: nodemailer.Transporter
 
   constructor() {
     this.transporter = nodemailer.createTransport({
@@ -14,7 +14,7 @@ export class MailerService {
         user: 'leecervan@163.com', // 发送邮件的邮箱账号
         pass: 'PAQVFAGEZOEIRHSL', // 发送邮件的邮箱密码
       },
-    });
+    })
   }
 
   async sendMail(to: string, code: string) {
@@ -23,8 +23,8 @@ export class MailerService {
       to, // 收件人邮箱地址
       subject: '邮件验证码', // 邮件主题
       text: `您的验证码为：${code}`, // 邮件正文
-    };
-    const result = await this.transporter.sendMail(mailOptions);
-    return result;
+    }
+    const result = await this.transporter.sendMail(mailOptions)
+    return result
   }
 }

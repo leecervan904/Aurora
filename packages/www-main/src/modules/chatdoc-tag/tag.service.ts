@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTagDto, UpdateTagDto } from './tag.dto';
-import { ChatdocTag } from './tag.model';
-import { InjectModel } from '@app/transformers/model.transformer';
-import { MongooseModel } from '@app/interfaces/mongoose.interface';
-import { PaginateOptions, PaginateQuery } from '@app/utils/paginate';
+import { Injectable } from '@nestjs/common'
+import { InjectModel } from '@app/transformers/model.transformer'
+import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import type { PaginateOptions, PaginateQuery } from '@app/utils/paginate'
+import { ChatdocTag } from './tag.model'
+import type { CreateTagDto, UpdateTagDto } from './tag.dto'
 
 @Injectable()
 export class TagService {
@@ -16,29 +16,28 @@ export class TagService {
     const existedTag = await this.tagModel.findOne({
       userId,
       slug: createTagDto.slug,
-    });
-    if (existedTag) {
-      throw `The slug ${createTagDto.slug} is existed!`;
-    }
+    })
+    if (existedTag)
+      throw `The slug ${createTagDto.slug} is existed!`
 
-    const newTag = await this.tagModel.create({ userId, ...createTagDto });
+    const newTag = await this.tagModel.create({ userId, ...createTagDto })
     return {
       data: newTag,
-    };
+    }
   }
 
   async findAll(userId: number) {
-    const tags = await this.tagModel.find({ userId });
+    const tags = await this.tagModel.find({ userId })
     return {
       data: tags,
-    };
+    }
   }
 
-  async findOne(userId: number, tagId: number) {
+  findOne(userId: number, tagId: number) {
     return this.tagModel
       .findOne({ userId, id: tagId })
       .exec()
-      .then((res) => res || Promise.reject(`Tag '${tagId}' not found!`));
+      .then(res => res || Promise.reject(new Error(`Tag '${tagId}' not found!`)))
   }
 
   async update(userId: number, id: number, updateTagDto: UpdateTagDto) {
@@ -46,10 +45,9 @@ export class TagService {
     const existedTag = await this.tagModel.findOne({
       userId,
       slug: updateTagDto.slug,
-    });
-    if (existedTag && String(existedTag._id) !== String(id)) {
-      throw `Tag slug '${updateTagDto.slug}' is already exist!`;
-    }
+    })
+    if (existedTag && String(existedTag._id) !== String(id))
+      throw `Tag slug '${updateTagDto.slug}' is already exist!`
 
     // 2. tag 不存在
     const newTag = await this.tagModel.findOneAndUpdate(
@@ -58,25 +56,23 @@ export class TagService {
       {
         new: true,
       },
-    );
-    if (!newTag) {
-      throw `Tag ${id} not found!`;
-    }
+    )
+    if (!newTag)
+      throw `Tag ${id} not found!`
 
     return {
       data: newTag,
-    };
+    }
   }
 
   async remove(userId: number, id: number) {
-    const tag = await this.tagModel.findOneAndRemove({ userId, id });
-    if (!tag) {
-      throw `Tag ${id} not found!`;
-    }
+    const tag = await this.tagModel.findOneAndRemove({ userId, id })
+    if (!tag)
+      throw `Tag ${id} not found!`
 
     return {
       data: tag,
-    };
+    }
   }
 
   // async aggregate() {}
@@ -86,17 +82,17 @@ export class TagService {
     query: PaginateQuery<ChatdocTag>,
     options: PaginateOptions,
   ) {
-    console.log(userId, query, '---');
+    console.log(userId, query, '---')
     const tags = await this.tagModel.paginate(
       { userId, ...query },
       {
         ...options,
         lean: true,
       },
-    );
+    )
 
     return {
       data: tags,
-    };
+    }
   }
 }
