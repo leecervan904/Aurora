@@ -44,7 +44,7 @@
     "@types/estree": "^1.0.1"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*": "eslint . --fix"
   },
   "config": {
     "commitizen": {
