@@ -4,6 +4,7 @@ import type jwt from 'jsonwebtoken'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from '@app/modules/user/jwt.strategy'
+import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './modules/auth/auth.module'
@@ -17,6 +18,7 @@ import { MailerModule } from './modules/mailer/mailer.module'
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     UserModule,
     DatabaseModule,
