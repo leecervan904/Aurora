@@ -7,6 +7,7 @@ export class MailController {
 
   @Post()
   async sendMail(@Body('email') email: string) {
+    // Use for test
     const result = await this.mailerService.sendMail(email, '123456')
     return { message: '邮件已发送', result }
   }
