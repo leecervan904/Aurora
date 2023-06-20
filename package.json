@@ -36,10 +36,8 @@
     "@types/estree": "^1.0.1",
     "commitizen": "^4.3.0",
     "eslint": "^8.42.0",
-    "eslint-plugin-prettier": "^3.3.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
-    "prettier": "^2.8.8",
     "typescript": "~5.0.4"
   },
   "resolutions": {
