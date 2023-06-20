@@ -16,10 +16,13 @@
     "ai",
     "ChatGPT"
   ],
+  "engines": {
+    "node": "^16"
+  },
   "scripts": {
     "dev:web": "pnpm --filter @aurora/client-web dev",
-    "dev:extension": "pnpm --filter @aurora/client-extension def",
-    "dev:main": "pnpm --filter @aurora/www-main start:dev",
+    "dev:extension": "pnpm --filter @aurora/client-extension dev",
+    "start:main": "pnpm --filter @aurora/www-main start:dev",
     "commit": "cz",
     "prepare": "husky install",
     "lint": "eslint .",
@@ -44,7 +47,7 @@
     "@types/estree": "^1.0.1"
   },
   "lint-staged": {
-    "*": "eslint . --fix"
+    "*": "eslint --fix"
   },
   "config": {
     "commitizen": {
