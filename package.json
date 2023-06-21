@@ -20,9 +20,10 @@
     "node": "^16"
   },
   "scripts": {
-    "dev:web": "pnpm --filter @aurora/client-web dev",
-    "dev:extension": "pnpm --filter @aurora/client-extension dev",
-    "start:main": "pnpm --filter @aurora/www-main start:dev",
+    "dev:main": "pnpm --filter @aurora/app-main dev",
+    "dev:extension": "pnpm --filter @aurora/app-extension dev",
+    "start:main": "pnpm --filter @aurora/service-main start:dev",
+    "start:openai": "pnpm --filter @aurora/service-openai start:dev",
     "commit": "cz",
     "prepare": "husky install",
     "lint": "eslint .",

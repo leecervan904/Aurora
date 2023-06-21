@@ -1,5 +1,5 @@
 {
-  "name": "@aurora/www-main",
+  "name": "@aurora/service-main",
   "version": "0.0.1",
   "private": true,
   "description": "Server for ChatGPT-web, powered by NestJS.",
