@@ -1,5 +1,5 @@
 {
-  "name": "@aurora/client-extension",
+  "name": "@aurora/app-extension",
   "displayName": "Client extension",
   "version": "0.0.1",
   "packageManager": "pnpm@6.30.1",

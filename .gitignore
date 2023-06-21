@@ -78,10 +78,3 @@ dist
 .idea
 
 *.lerna_backup
-
-# www-main
-packages/www-main/.env
-
-# plasmo
-packages/www-entension/.plasmo
-packages/www-entension/build
