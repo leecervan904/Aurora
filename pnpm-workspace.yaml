@@ -1,5 +1,6 @@
 packages:
   - 'packages/*'
+  - 'services/*'
   # - 'packages/client-extension'
   # - 'packages/client-web'
   # - 'packages/www-main'
