@@ -1,5 +1,5 @@
 {
-  "name": "@aurora/openai",
+  "name": "@aurora/service-openai",
   "version": "0.0.1",
   "private": true,
   "description": "",
